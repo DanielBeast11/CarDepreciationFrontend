@@ -14,7 +14,7 @@ const CarCard = ({car, isMock}: CarCardProps) => {
         <Card key={car.id} style={{width: '18rem', margin: "0 auto 50px", height: "calc(100% - 50px)" }}>
             <CardImg
                 src={isMock ? mockImage as string : car.image}
-                style={{"height": "200px"}}
+                style={{"height": "200px", "width": "100%", "objectFit": "cover"}}
             />
             <CardBody className="d-flex flex-column justify-content-between">
                 <CardTitle tag="h5">

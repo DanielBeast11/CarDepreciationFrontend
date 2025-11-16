@@ -2,10 +2,11 @@ import {Button, Col, Container, Form, Input, Row} from "reactstrap";
 import {T_Car} from "src/modules/types.ts";
 import CarCard from "components/CarCard";
 import {CarMocks} from "src/modules/mocks.ts";
-import {FormEvent, useEffect} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import * as React from "react";
 import "./styles.css"
 import NoCarsCartIcon from "../../assets/no-cars-cart-icon.png"
+import HasCarsCartIcon from "../../assets/cart-icon.png"
 
 type Props = {
     cars: T_Car[],
@@ -17,7 +18,8 @@ type Props = {
 }
 
 const CarsListPage = ({cars, setCars, isMock, setIsMock, carName, setCarName}:Props) => {
-
+    const [carsCount, setCarsCount] = useState<number>(0);
+    
     const fetchData = async () => {
         try {
             const response = await fetch(`/api/cars/?car_name=${carName.toLowerCase()}`)
@@ -26,6 +28,16 @@ const CarsListPage = ({cars, setCars, isMock, setIsMock, carName, setCarName}:Pr
             setIsMock(false)
         } catch {
             createMocks()
+        }
+    }
+
+    const fetchCart = async () => {
+        try {
+            const response = await fetch(`/api/depreciations/depreciation_cart/`);
+            const data = await response.json();
+            setCarsCount(data.cars_count);
+        } catch {
+            console.log('what\'s wrong');
         }
     }
 
@@ -44,17 +56,23 @@ const CarsListPage = ({cars, setCars, isMock, setIsMock, carName, setCarName}:Pr
     }
 
     useEffect(() => {
-        void fetchData()
+        void fetchData();
     }, []);
+
+    useEffect(() => {
+        void fetchCart();
+    }, [carsCount])
 
     return (
         <Container>
             <Row className="align-items-center">
                 <Col xs="auto" className="text-center">
-                    <img src={NoCarsCartIcon} alt="Иконка пустой корзины" style={{ maxWidth: '100px' }} />
+                    <img src={carsCount > 0 ? HasCarsCartIcon : NoCarsCartIcon}
+                        alt={carsCount > 0 ? "Иконка корзины с автомобилями" : "Иконка пустой корзины"}
+                        style={{ maxWidth: '100px' }} />
                 </Col>
                 <Col xs="auto" className="text-center">
-                    <p className="mb-0">Количество автомобилей: 0</p>
+                    <p className="mb-0">Количество автомобилей: {carsCount}</p>
                 </Col>
             </Row>
             <Row className="mb-5 justify-content-center">
