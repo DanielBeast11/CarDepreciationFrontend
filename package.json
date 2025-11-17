@@ -1,5 +1,6 @@
 {
-  "name": "lab5",
+  "name": "frontend-application-development",
+  "homepage": "https://danielbeast11.github.io/frontend-application-development",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.10.1",
+    "@tauri-apps/api": "^2.9.0",
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -26,7 +28,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.9.4",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.19.25",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
@@ -37,6 +39,8 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "gh-pages": "^6.1.1",
     "typescript": "^5.2.2",
-    "vite": "7.0.5"
+    "vite": "7.0.5",
+    "vite-plugin-mkcert": "^1.17.9",
+    "vite-plugin-pwa": "^1.1.0"
   }
 }
