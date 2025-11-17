@@ -10,6 +10,7 @@ import NoCarsCartIcon from "../../assets/no-cars-cart-icon.png"
 import HasCarsCartIcon from "../../assets/cart-icon.png"
 import { setCarName } from "src/store/slices/filterSlice";
 import { RootState } from '../../store'
+import { dest_api } from '../../config/tauri_config'
 
 type Props = {
     cars: T_Car[],
@@ -25,7 +26,7 @@ const CarsListPage = ({cars, setCars, isMock, setIsMock}:Props) => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`/api/cars/?car_name=${carName.toLowerCase()}`)
+            const response = await fetch(`${dest_api}/cars/?car_name=${carName.toLowerCase()}`)
             const data = await response.json()
             setCars(data)
             setIsMock(false)
@@ -36,7 +37,7 @@ const CarsListPage = ({cars, setCars, isMock, setIsMock}:Props) => {
 
     const fetchCart = async () => {
         try {
-            const response = await fetch(`/api/depreciations/depreciation_cart/`);
+            const response = await fetch(`${dest_api}/depreciations/depreciation_cart/`);
             const data = await response.json();
             setCarsCount(data.cars_count);
         } catch {

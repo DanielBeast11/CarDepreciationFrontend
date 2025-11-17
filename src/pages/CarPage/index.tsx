@@ -5,6 +5,7 @@ import {T_Car} from "src/modules/types.ts";
 import {Col, Container, Row} from "reactstrap";
 import {CarMocks} from "src/modules/mocks.ts";
 import mockImage from "assets/mock.png";
+import { dest_api } from 'src/config/tauri_config';
 
 
 type Props = {
@@ -19,7 +20,7 @@ const CarPage = ({selectedCar, setSelectedCar, isMock, setIsMock}: Props) => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`/api/cars/${id}`)
+            const response = await fetch(`${dest_api}/cars/${id}`)
             const data = await response.json()
             setSelectedCar(data)
         } catch {
