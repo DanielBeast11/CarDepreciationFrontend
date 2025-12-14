@@ -9,7 +9,7 @@ import path from 'path'
 export default defineConfig(({ command }) => {
   
     const base = command === 'build'
-      ? '/frontend-application-development/' 
+      ? '/CarDepreciationFrontend/' 
       : '/';
 
     return {
@@ -27,7 +27,7 @@ export default defineConfig(({ command }) => {
             name: "Расчет амортизации автомобилей",
             short_name: "Амортизация авто",
             description: "Приложение для расчета амортизации автомобилей логистической компании",
-            start_url: "/frontend-application-development/",
+            start_url: "/CarDepreciationFrontend/",
             display: "standalone",
             background_color: "#ffffff",
             theme_color: "#007bff",

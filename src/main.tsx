@@ -12,7 +12,7 @@ import './styles.css';
 const getBasename = () => {
   // Если на GitHub Pages, используем название репозитория
   if (window.location.hostname.includes('github.io')) {
-    return '/frontend-application-development';
+    return '/CarDepreciationFrontend';
   }
   // Для локальной разработки - корень
   return '/';
