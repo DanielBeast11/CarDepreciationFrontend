@@ -2,9 +2,9 @@ import {Button, Card, CardImg, CardText, CardTitle, Col, Row} from "reactstrap";
 import {Link} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "store/store.ts";
 import {useEffect, useState} from "react";
+import CustomInputNumber from "components/CustomInputNumber/CustomInputNumber.tsx";
 import {removeCarFromDraftDepreciation, updateCarValue} from "store/slices/depreciationsSlice.ts";
 import {CarItem} from "src/api/Api.ts";
-import CustomInputNumber from "components/CustomInputNumber/CustomInputNumber.tsx";
 
 type Props = {
     car: CarItem,
@@ -12,9 +12,10 @@ type Props = {
     showRemoveBtn?: boolean,
     editMM?: boolean,
     saveMM?: boolean,
+    onSaveMM?: () => void; // Новая пропса для вызова сохранения пробегов
 }
 
-const CarCardDepreciation = ({car, showRemoveBtn=false, editMM=false, saveMM}:Props) => {
+const CarCardDepreciation = ({car, showRemoveBtn=false, editMM=false, saveMM, onSaveMM}:Props) => {
 
     const dispatch = useAppDispatch()
 
@@ -26,14 +27,30 @@ const CarCardDepreciation = ({car, showRemoveBtn=false, editMM=false, saveMM}:Pr
         await dispatch(removeCarFromDraftDepreciation(car.id))
     }
 
+    // Сохранение при изменении saveMM (из главной кнопки "Сохранить все")
     useEffect(() => {
         if (saveMM != null) {
             void updateValue()
         }
     }, [saveMM]);
 
+    // Локальное сохранение пробега конкретной машины
+    const saveMileage = async () => {
+        if (local_mmfield && local_mmfield !== car.mileage) {
+            await dispatch(updateCarValue({
+                car_id: car.id,
+                mileage: local_mmfield
+            }))
+        }
+        
+        // Если передан колбэк, вызываем его (для обновления UI или других действий)
+        if (onSaveMM) {
+            onSaveMM()
+        }
+    }
+
     const updateValue = async () => {
-        if (local_mmfield) {
+        if (local_mmfield && local_mmfield !== car.mileage) {
             dispatch(updateCarValue({
                 car_id: car.id,
                 mileage: local_mmfield
@@ -64,7 +81,7 @@ const CarCardDepreciation = ({car, showRemoveBtn=false, editMM=false, saveMM}:Pr
                 VIN: {car.vin}
             </CardText>
             <CardText className="text-muted">
-                Стоимость: {car.price}
+                Стоимость: {car.price} руб.
             </CardText>
         </Col>
         
@@ -84,11 +101,28 @@ const CarCardDepreciation = ({car, showRemoveBtn=false, editMM=false, saveMM}:Pr
                 
                 {/* Кнопки */}
                 <div className="d-flex justify-content-center gap-2">
-                    <Link to={`/cars/${car.id}`}>
-                        <Button color="primary" size="sm" className="px-3">
-                            Открыть
+                    {/* Заменяем кнопку "Открыть" на "Сохранить пробег" */}
+                    {editMM && (
+                        <Button 
+                            color="success" 
+                            size="sm"
+                            onClick={saveMileage}
+                            className="px-3"
+                            disabled={local_mmfield === car.mileage}
+                        >
+                            Сохранить пробег
                         </Button>
-                    </Link>
+                    )}
+                    
+                    {/* Ссылка на детали машины (только для просмотра) */}
+                    {!editMM && (
+                        <Link to={`/cars/${car.id}`}>
+                            <Button color="primary" size="sm" className="px-3">
+                                Открыть
+                            </Button>
+                        </Link>
+                    )}
+                    
                     {showRemoveBtn &&
                         <Button 
                             color="danger" 
