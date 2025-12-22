@@ -16,7 +16,10 @@ const DepreciationsTable = ({depreciations}:Props) => {
                 <Col md="1" className="d-flex justify-content-center">
                     <h6 className="text-center">Статус</h6>
                 </Col>
-                <Col md="2" className="d-flex justify-content-center">
+                <Col md="1" className="d-flex justify-content-center">
+                    <h6 className="text-center">Первичная оценка</h6>
+                </Col>
+                <Col md="1" className="d-flex justify-content-center">
                     <h6 className="text-center">Сумма амортизации</h6>
                 </Col>
                 <Col md="2" className="d-flex justify-content-center">

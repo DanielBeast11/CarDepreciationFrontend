@@ -54,26 +54,17 @@ const DepreciationPage = () => {
     const sendDepreciation = async (e:React.FormEvent) => {
         e.preventDefault()
 
-        await saveDepreciation()
+        await saveDepreciationField()
 
         await dispatch(sendDraftDepreciation())
 
         navigate("/depreciations/")
     }
 
-    const saveDepreciation = async (e?:React.MouseEvent<HTMLButtonElement>) => {
-        e?.preventDefault()
-
-        const data = {
-            price
-        }
-
-        await dispatch(updateDepreciation(data))
-        setSaveMM(value => !value)
-    }
-
-    const saveDepreciationMM = () => {
-        setSaveMM(value => !value)
+    const saveDepreciation = async () => {
+        // Сохраняем и основное поле, и пробеги машин
+        await saveDepreciationField()
+        setSaveMM(value => !value) // Триггерим сохранение пробегов в CarCardDepreciation
     }
 
     const saveDepreciationField = async () => {
@@ -82,6 +73,10 @@ const DepreciationPage = () => {
         }
 
         await dispatch(updateDepreciation(data))
+    }
+
+    const saveDepreciationMM = () => {
+        setSaveMM(value => !value) // Только триггерим сохранение пробегов в CarCardDepreciation
     }
 
     const deleteDepreciation = async () => {
@@ -109,7 +104,13 @@ const DepreciationPage = () => {
             <Row>
                 {depreciation.cars && depreciation.cars.length > 0 ? depreciation.cars.map((car:CarItem) => (
                     <Row key={car.id} className="d-flex justify-content-center mb-3">
-                        <CarCardDepreciation car={car} showRemoveBtn={isDraft} editMM={isDraft} saveMM={saveMM} />
+                        <CarCardDepreciation 
+                            car={car} 
+                            showRemoveBtn={isDraft} 
+                            editMM={isDraft} 
+                            saveMM={saveMM}
+                            onSaveMM={saveDepreciationMM} // Передаем функцию сохранения пробегов
+                        />
                     </Row>
                 )) :
                     <h3 className="text-center">Список пуст</h3>
@@ -118,11 +119,15 @@ const DepreciationPage = () => {
             {isDraft &&
                 <Row className="mt-5">
                     <Col className="d-flex gap-5 justify-content-center flex-wrap">
-                        <Button color="success" className="fs-12" onClick={saveDepreciation}>Сохранить</Button>
-                        <Button color="success" className="fs-12" onClick={saveDepreciationMM}>Сохранить пробег</Button>
-                        <Button color="success" className="fs-12" onClick={saveDepreciationField}>Сохранить первичную оценку</Button>
-                        <Button color="primary" className="fs-12" type="submit">Отправить</Button>
-                        <Button color="danger" className="fs-12" onClick={deleteDepreciation}>Удалить</Button>
+                        <Button color="success" className="fs-12" onClick={saveDepreciation}>
+                            Сохранить поля заявки
+                        </Button>
+                        <Button color="primary" className="fs-12" type="submit">
+                            Сформировать
+                        </Button>
+                        <Button color="danger" className="fs-12" onClick={deleteDepreciation}>
+                            Удалить
+                        </Button>
                     </Col>
                 </Row>
             }

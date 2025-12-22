@@ -27,7 +27,14 @@ const DepreciationCard = ({depreciation}:Props) => {
                         {STATUSES[depreciation.status as unknown as number]}
                     </CardTitle>
                 </Col>
-                <Col md={2} className="d-flex justify-content-center align-items-center">
+                <Col md={1} className="d-flex justify-content-center align-items-center">
+                    {depreciation.price &&
+                        <CardText className="text-center">
+                            {depreciation.price} руб.
+                        </CardText>
+                    }
+                </Col>
+                <Col md={1} className="d-flex justify-content-center align-items-center">
                     {depreciation.summ &&
                         <CardText className="text-center">
                             {depreciation.summ} руб.
